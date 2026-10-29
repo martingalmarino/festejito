@@ -1,3 +1,4 @@
+import { leerSemillas } from "./catalogo";
 import type { Horarios, PeriodoHorario, Punto } from "./types";
 
 const MASCARA_BASICA = "id,displayName,formattedAddress,location,googleMapsUri";
@@ -89,11 +90,17 @@ async function pedirDetalle(placeId: string, mascara: string): Promise<DetalleGo
   }
 }
 
-export function detalleBasico(placeId: string) {
+function enCatalogo(placeId: string) {
+  return leerSemillas().some((semilla) => semilla.placeId === placeId);
+}
+
+export async function detalleBasico(placeId: string) {
+  if (!enCatalogo(placeId)) return null;
   return pedirDetalle(placeId, MASCARA_BASICA);
 }
 
-export function detalleCompleto(placeId: string) {
+export async function detalleCompleto(placeId: string) {
+  if (!enCatalogo(placeId)) return null;
   return pedirDetalle(placeId, MASCARA_COMPLETA);
 }
 
