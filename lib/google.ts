@@ -1,9 +1,10 @@
 import type { Horarios, PeriodoHorario, Punto } from "./types";
 
-const CAMPO =
-  "displayName,formattedAddress,nationalPhoneNumber,websiteUri,rating,userRatingCount,regularOpeningHours,location,googleMapsUri,photos";
+const MASCARA_BASICA = "id,displayName,formattedAddress,location,googleMapsUri";
+const MASCARA_COMPLETA =
+  "nationalPhoneNumber,websiteUri,rating,userRatingCount,regularOpeningHours,photos";
 
-const REVALIDAR = 60 * 60 * 20;
+const REVALIDAR = 60 * 60 * 24 * 8;
 
 export type DetalleGoogle = {
   nombre: string | null;
@@ -65,19 +66,19 @@ export function hayClavePlaces() {
   return Boolean(process.env.GOOGLE_PLACES_API_KEY);
 }
 
-export async function detallePlace(placeId: string): Promise<DetalleGoogle | null> {
+async function pedirDetalle(placeId: string, mascara: string): Promise<DetalleGoogle | null> {
   const clave = process.env.GOOGLE_PLACES_API_KEY;
   if (!clave) return null;
   try {
     const respuesta = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, {
       headers: {
         "X-Goog-Api-Key": clave,
-        "X-Goog-FieldMask": CAMPO,
+        "X-Goog-FieldMask": mascara,
         "Accept-Language": "es",
       },
       next: { revalidate: REVALIDAR },
     });
-    if (!respuesta.ok) {
+    if (respuesta.status === 429 || !respuesta.ok) {
       console.error("Place Details respondió", respuesta.status);
       return null;
     }
@@ -86,6 +87,14 @@ export async function detallePlace(placeId: string): Promise<DetalleGoogle | nul
     console.error("Place Details no disponible");
     return null;
   }
+}
+
+export function detalleBasico(placeId: string) {
+  return pedirDetalle(placeId, MASCARA_BASICA);
+}
+
+export function detalleCompleto(placeId: string) {
+  return pedirDetalle(placeId, MASCARA_COMPLETA);
 }
 
 export async function bytesFoto(fotoNombre: string) {

@@ -2,16 +2,36 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FichaView } from "@/components/ficha-view";
 import { JsonLd } from "@/components/json-ld";
-import { leerSemillas } from "@/lib/catalogo";
+import { detalleCompleto } from "@/lib/google";
 import { salonPorSlug, listarSalones } from "@/lib/salones";
 import { breadcrumbLd, localBusinessLd } from "@/lib/schema";
 import { barrioPath, CITY_PATH, fichaPath } from "@/lib/site";
+import type { Salon } from "@/lib/types";
 
-export const revalidate = 72000;
-export const dynamicParams = false;
+export const revalidate = 691200;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return leerSemillas().map((semilla) => ({ slug: semilla.slug }));
+  return [];
+}
+
+async function conDetalleCompleto(salon: Salon): Promise<Salon> {
+  const extra = await detalleCompleto(salon.placeId);
+  if (!extra) return salon;
+  const hayExtra =
+    extra.telefono || extra.web || extra.rating !== null || extra.cantidadResenas !== null || extra.horarios || extra.fotoNombre;
+  if (!hayExtra) return salon;
+  return {
+    ...salon,
+    telefono: extra.telefono,
+    web: extra.web,
+    rating: extra.rating,
+    cantidadResenas: extra.cantidadResenas,
+    horarios: extra.horarios,
+    fotoNombre: extra.fotoNombre,
+    fotoAutores: extra.fotoAutores,
+    fuente: salon.fuente === "ejemplo" ? "ejemplo" : "google",
+  };
 }
 
 type Props = { params: Promise<{ slug: string }> };
@@ -33,8 +53,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Ficha({ params }: Props) {
   const { slug } = await params;
   const salones = await listarSalones();
-  const salon = salones.find((item) => item.slug === slug);
-  if (!salon) notFound();
+  const base = salones.find((item) => item.slug === slug);
+  if (!base) notFound();
+  const salon = await conDetalleCompleto(base);
   const cantidadBarrio = salones.filter((item) => item.barrioSlug === salon.barrioSlug).length;
   const migas = [
     { nombre: "Inicio", href: "/" },

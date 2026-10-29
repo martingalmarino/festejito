@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { leerSemillas, type Semilla } from "./catalogo";
-import { detallePlace, hayClavePlaces, type DetalleGoogle } from "./google";
+import { detalleBasico, hayClavePlaces, type DetalleGoogle } from "./google";
 import type { Salon } from "./types";
 
 async function enLotes<T, R>(items: T[], tamano: number, tarea: (item: T) => Promise<R>) {
@@ -42,15 +42,8 @@ function armar(semilla: Semilla, detalle: DetalleGoogle | null, indice: number):
       ...base,
       nombre: detalle.nombre,
       direccion: detalle.direccion,
-      telefono: detalle.telefono,
-      web: detalle.web,
-      rating: detalle.rating,
-      cantidadResenas: detalle.cantidadResenas,
-      horarios: detalle.horarios,
       ubicacion: detalle.ubicacion,
       mapsUrl: detalle.mapsUrl,
-      fotoNombre: detalle.fotoNombre,
-      fotoAutores: detalle.fotoAutores,
       fuente: "google",
     };
   }
@@ -67,7 +60,7 @@ function armar(semilla: Semilla, detalle: DetalleGoogle | null, indice: number):
 export const listarSalones = cache(async (): Promise<Salon[]> => {
   const semillas = leerSemillas();
   if (!hayClavePlaces()) return semillas.map((semilla, indice) => armar(semilla, null, indice));
-  const detalles = await enLotes(semillas, 6, (semilla) => detallePlace(semilla.placeId));
+  const detalles = await enLotes(semillas, 6, (semilla) => detalleBasico(semilla.placeId));
   return semillas.map((semilla, indice) => armar(semilla, detalles[indice], indice));
 });
 

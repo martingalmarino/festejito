@@ -18,7 +18,7 @@ import { listarSalones } from "@/lib/salones";
 import { breadcrumbLd, faqLd, itemListLd } from "@/lib/schema";
 import { barrioPath, CITY_PATH } from "@/lib/site";
 
-export const revalidate = 72000;
+export const revalidate = 691200;
 export const dynamicParams = false;
 
 export function generateStaticParams() {

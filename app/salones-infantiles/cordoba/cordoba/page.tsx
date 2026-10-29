@@ -19,7 +19,7 @@ import { breadcrumbLd, faqLd, itemListLd } from "@/lib/schema";
 import { barrioPath, CITY_PATH } from "@/lib/site";
 import { Icon } from "@/components/icons";
 
-export const revalidate = 72000;
+export const revalidate = 691200;
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
