@@ -1,0 +1,12 @@
+# Festejito
+
+Directorio de salones de fiestas infantiles. Esta etapa: solo Córdoba Capital.
+
+- Inicio: /
+- Ciudad: /salones-infantiles/cordoba/cordoba/
+- Ficha: /proveedor/{slug}
+- Metodología: /como-relevamos
+
+Hubs de barrio indexables (3 o más fichas): Alta Córdoba, Alberdi, General Pueyrredón, Argüello, Villa Belgrano.
+El resto de los barrios no tiene página indexable.
+No hay precios cargados. No es un ranking.

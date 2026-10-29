@@ -1,0 +1,73 @@
+{
+  "_notas": "Variables entre {{ }}. Las marcadas con PENDIENTE_DATOS requieren relevamiento real; si están vacías, el bloque NO se renderiza. Nunca completar con estimaciones inventadas.",
+  "variables": {
+    "geo": ["{{provincia}}", "{{provincia_slug}}", "{{ciudad}}", "{{ciudad_slug}}", "{{barrio}}", "{{zona}}", "{{ciudades_cercanas}}", "{{fuente_barrios_url}}"],
+    "conteos": ["{{n_fichas}}", "{{n_salones}}", "{{n_peloteros}}", "{{n_rubro}}", "{{n_ciudades}}"],
+    "PENDIENTE_DATOS": ["{{precio_min}}", "{{precio_max}}", "{{precio_promedio}}", "{{duracion_turno_tipica}}", "{{capacidad_tipica}}", "{{fecha_relevamiento}}", "{{n_precios_relevados}}", "{{fuente_precios}}"],
+    "meta": ["{{anio}}", "{{mes_actualizacion}}", "{{rubro}}", "{{rubro_plural}}"]
+  },
+  "hub_provincia": {
+    "title": "Salones de fiestas infantiles en {{provincia}} ({{anio}}) | Festejito",
+    "meta_description": "Salones infantiles, peloteros, animación, tortas y globos en {{n_ciudades}} ciudades de {{provincia}}. Fichas con datos oficiales de cada negocio y precios orientativos con fecha.",
+    "h1": "Salones de fiestas infantiles en {{provincia}}",
+    "intro_respuesta_directa": "En {{provincia}} tenés {{n_fichas}} proveedores para cumples infantiles relevados en {{n_ciudades}} ciudades. Elegí tu ciudad para ver salones, peloteros y servicios, con precios orientativos actualizados a {{mes_actualizacion}}.",
+    "bloques_citables": [
+      "Dato clave: Festejito relevó {{n_fichas}} proveedores en {{provincia}}; los datos salen de la web o las redes oficiales de cada negocio.",
+      "Ciudades con más opciones: {{top_ciudades}}."
+    ],
+    "faqs": [
+      {"q": "¿En qué ciudades de {{provincia}} hay salones infantiles en Festejito?", "a": "Por ahora en {{lista_ciudades}}. Sumamos ciudades a medida que verificamos datos."},
+      {"q": "¿Los precios son exactos?", "a": "No. Son rangos orientativos con fecha de relevamiento. Confirmá siempre con el salón antes de señar."}
+    ]
+  },
+  "hub_ciudad": {
+    "title": "Salón de fiestas infantiles en {{ciudad}}: {{n_salones}} opciones y precios {{anio}}",
+    "title_alt": ["Salones infantiles y peloteros en {{ciudad}} | Precios {{mes_actualizacion}}", "Cumpleaños infantiles en {{ciudad}}: salones, peloteros y servicios"],
+    "meta_description": "Compará {{n_salones}} salones y peloteros en {{ciudad}}, {{provincia}}. Precios orientativos relevados en {{mes_actualizacion}}, por barrio, con datos oficiales de cada lugar.",
+    "h1": "Salones de fiestas infantiles en {{ciudad}}",
+    "intro_respuesta_directa": "En {{ciudad}} relevamos {{n_salones}} salones de fiestas infantiles y peloteros. Un turno cuesta entre {{precio_min}} y {{precio_max}} (relevado en {{fecha_relevamiento}}, {{n_precios_relevados}} lugares). Abajo los tenés por barrio, con lo que incluye cada uno.",
+    "intro_fallback_sin_precios": "En {{ciudad}} relevamos {{n_salones}} salones de fiestas infantiles y peloteros, con datos de su web o sus redes oficiales. Todavía estamos juntando precios: si consultaste uno, contanos cuánto te pasaron.",
+    "bloques_citables": [
+      "Precio orientativo de un salón infantil en {{ciudad}} ({{fecha_relevamiento}}): {{precio_min}} – {{precio_max}} por turno de {{duracion_turno_tipica}}. Fuente: {{fuente_precios}}.",
+      "Barrios con más salones en {{ciudad}}: {{top_barrios}}.",
+      "Capacidad habitual: {{capacidad_tipica}} chicos."
+    ],
+    "secciones": ["Listado (ItemList)", "Por barrio", "Rubros: peloteros, animación, tortas, globos", "Precios", "Contexto local (ver ciudades/*.md)", "FAQ", "CTA herramientas"],
+    "faqs": [
+      {"q": "¿Cuánto sale un salón de fiestas infantiles en {{ciudad}}?", "a": "Según nuestro relevamiento de {{fecha_relevamiento}}, entre {{precio_min}} y {{precio_max}} por turno. El precio cambia según el día, la cantidad de chicos y si incluye comida."},
+      {"q": "¿Con cuánta anticipación conviene reservar en {{ciudad}}?", "a": "{{anticipacion_recomendada}}"},
+      {"q": "¿Qué incluye normalmente un pelotero?", "a": "Varía por lugar. Revisá en cada ficha si incluye animación, comida, torta e invitaciones."},
+      {"q": "¿Hay salones infantiles en {{barrio_destacado}}?", "a": "Sí, tenemos {{n_barrio_destacado}} en {{barrio_destacado}}."}
+    ]
+  },
+  "barrio": {
+    "regla_indexacion": "index solo si n_fichas_barrio >= 3; si no, noindex,follow",
+    "title": "Salón de cumpleaños en {{barrio}}, {{ciudad}}: {{n_fichas}} opciones",
+    "meta_description": "Salones infantiles y peloteros en {{barrio}} ({{ciudad}}) y alrededores. Lo que incluye cada uno, cómo contactarlos y precios orientativos.",
+    "h1": "Salones de cumpleaños infantiles en {{barrio}}",
+    "intro_respuesta_directa": "En {{barrio}} hay {{n_fichas}} salones y peloteros relevados, y {{n_cercanos}} más en barrios vecinos como {{barrios_vecinos}}.",
+    "bloques_citables": ["{{barrio}} es un barrio de {{ciudad}} ({{fuente_barrios_url}}). Salones relevados: {{n_fichas}}."],
+    "faqs": [
+      {"q": "¿Qué salones infantiles hay cerca de {{barrio}}?", "a": "{{lista_fichas}} y, en barrios vecinos, {{lista_cercanos}}."}
+    ]
+  },
+  "rubro_ciudad": {
+    "rubros": {"peloteros": "peloteros", "animacion": "animación de cumpleaños", "tortas": "tortas de cumpleaños infantiles", "globos": "globos y decoración"},
+    "title": "{{rubro_plural|capitalize}} en {{ciudad}}: precios y opciones {{anio}}",
+    "meta_description": "{{n_rubro}} opciones de {{rubro}} en {{ciudad}}, {{provincia}}. Qué incluye cada servicio y precios orientativos relevados en {{mes_actualizacion}}.",
+    "h1": "{{rubro_plural|capitalize}} en {{ciudad}}",
+    "intro_respuesta_directa": "En {{ciudad}} relevamos {{n_rubro}} proveedores de {{rubro}}. Precio orientativo: {{precio_min}} – {{precio_max}} ({{fecha_relevamiento}}).",
+    "bloques_citables": ["Qué incluye en general {{rubro}}: {{incluye_tipico}}. Fuente: relevamiento Festejito, {{fecha_relevamiento}}."],
+    "faqs": [
+      {"q": "¿Cuánto cuesta {{rubro}} en {{ciudad}}?", "a": "Entre {{precio_min}} y {{precio_max}} según nuestro relevamiento de {{fecha_relevamiento}}."},
+      {"q": "¿Van a domicilio o solo al salón?", "a": "Depende del proveedor; en cada ficha lo aclaramos."}
+    ]
+  },
+  "schema_faqpage_ejemplo": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{"@type": "Question", "name": "{{faq.q}}", "acceptedAnswer": {"@type": "Answer", "text": "{{faq.a}}"}}],
+    "_regla": "Emitir solo las FAQs cuyas variables estén todas completas, y con el mismo texto que se ve en la página."
+  },
+  "schema_adicional": ["BreadcrumbList", "ItemList (fichas)", "LocalBusiness por ficha solo con NAP verificado", "Article con dateModified en blog y precios"]
+}
