@@ -1,0 +1,2 @@
+# Prompt para Cursor: blindar la ruta de fotos (rama base-cordoba)
+En app/foto/[placeId]/route.ts, antes de llamar a detalleCompleto, validar que el placeId decodificado exista en leerSemillas() (lib/catalogo.ts); si no está, responder 404 sin llamar a Google. Aplicar la misma validación en lib/google.ts (detalleCompleto/detalleBasico) como defensa extra: solo place_id del catálogo. No tocar nada más.
