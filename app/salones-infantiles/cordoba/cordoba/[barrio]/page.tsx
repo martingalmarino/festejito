@@ -13,17 +13,15 @@ import { bloqueBarrio, faqsBarrio, introBarrio } from "@/lib/contenido";
 import { vecinosEnDosKm } from "@/lib/cercanos";
 import { entero } from "@/lib/formato";
 import { leerFiltros } from "@/lib/filtros";
-import { leerSemillas } from "@/lib/catalogo";
 import { listarSalones } from "@/lib/salones";
 import { breadcrumbLd, faqLd, itemListLd } from "@/lib/schema";
 import { barrioPath, CITY_PATH } from "@/lib/site";
 
 export const revalidate = 691200;
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
-  const slugs = new Set(leerSemillas().map((semilla) => semilla.barrioSlug));
-  return [...slugs].map((barrio) => ({ barrio }));
+  return [];
 }
 
 type Props = { params: Promise<{ barrio: string }> };
