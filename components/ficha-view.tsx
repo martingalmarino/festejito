@@ -1,8 +1,7 @@
 import { bloqueBarrio } from "@/lib/contenido";
-import { cercanosDe } from "@/lib/cercanos";
 import { diaActual } from "@/lib/horarios";
 import { enlaceComoLlegar, enlaceGoogle } from "@/lib/enlaces";
-import { distancia, entero, nota, pesos } from "@/lib/formato";
+import { entero, nota, pesos } from "@/lib/formato";
 import { precioDe, precioVigente } from "@/lib/precios";
 import { barrioPath, CITY_PATH, fichaPath } from "@/lib/site";
 import type { Salon } from "@/lib/types";
@@ -53,12 +52,19 @@ function Dato({ etiqueta, valor }: { etiqueta: string; valor: string }) {
   );
 }
 
-export function FichaView({ salon, todos }: { salon: Salon; todos: Salon[] }) {
+export function FichaView({
+  salon,
+  cercanos,
+  cantidadBarrio,
+}: {
+  salon: Salon;
+  cercanos: { slug: string; barrio: string }[];
+  cantidadBarrio: number;
+}) {
   const precio = precioDe(salon.placeId);
   const vigente = precio ? precioVigente(precio.verificadoEl) : false;
   const minima = !salon.horarios && !salon.web && !salon.fotoNombre;
-  const cercanos = cercanosDe(salon, todos, 3);
-  const barrioHref = todos.filter((item) => item.barrioSlug === salon.barrioSlug).length >= 3 ? barrioPath(salon.barrioSlug) : `${CITY_PATH}?barrio=${salon.barrioSlug}`;
+  const barrioHref = cantidadBarrio >= 3 ? barrioPath(salon.barrioSlug) : `${CITY_PATH}?barrio=${salon.barrioSlug}`;
   const migas: Miga[] = [
     { nombre: "Inicio", href: "/" },
     { nombre: "Córdoba" },
@@ -240,14 +246,11 @@ export function FichaView({ salon, todos }: { salon: Salon; todos: Salon[] }) {
               <p className="kicker text-brand-800">{minima ? "04" : "06"}</p>
               <h2 className="mb-3 font-display text-3xl font-medium">Salones cercanos</h2>
               <ul>
-                {cercanos.map(({ salon: otro, metros }) => (
-                  <li key={otro.placeId} className="border-t border-ink-200 py-3">
+                {cercanos.map((otro) => (
+                  <li key={otro.slug} className="border-t border-ink-200 py-3">
                     <a className="ulink font-bold" href={fichaPath(otro.slug)}>
-                      {otro.nombre}
+                      {otro.barrio}
                     </a>
-                    <p className="text-sm text-ink-500">
-                      {distancia(metros)} · {otro.barrio}
-                    </p>
                   </li>
                 ))}
               </ul>
@@ -267,7 +270,7 @@ export function FichaView({ salon, todos }: { salon: Salon; todos: Salon[] }) {
               {salon.direccion ?? "No informada"}
             </p>
             <p className="mt-3 text-xs text-ink-500">{atribucion}</p>
-            <p className="mt-4 text-xs text-ink-500">{bloqueBarrio(salon.barrio, todos.filter((item) => item.barrio === salon.barrio).length)}</p>
+            <p className="mt-4 text-xs text-ink-500">{bloqueBarrio(salon.barrio, cantidadBarrio)}</p>
           </div>
         </aside>
       </div>

@@ -10,7 +10,6 @@ import { CITY_PATH } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const revalidate = 691200;
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Salones de fiestas infantiles en Córdoba Capital",

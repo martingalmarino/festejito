@@ -1,4 +1,4 @@
-import { unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { leerSemillas } from "./catalogo";
 import type { Horarios, PeriodoHorario, Punto } from "./types";
 
@@ -135,15 +135,9 @@ function enBuild() {
   return process.env.NEXT_PHASE === "phase-production-build";
 }
 
-const memoria = new Map<string, { vence: number; detalle: DetalleGoogle }>();
-
-async function pedirDetalle(placeId: string, mascara: string): Promise<DetalleGoogle | null> {
-  if (enBuild()) return null;
+async function pedirEnRed(placeId: string, mascara: string): Promise<DetalleGoogle> {
   const clave = process.env.GOOGLE_PLACES_API_KEY;
-  if (!clave) return null;
-  const claveMemoria = `${mascara}\n${placeId}`;
-  const guardado = memoria.get(claveMemoria);
-  if (guardado && guardado.vence > Date.now()) return guardado.detalle;
+  if (!clave) throw new Error("sin-clave");
   await entrarCola();
   try {
     let respuesta: Response;
@@ -154,27 +148,36 @@ async function pedirDetalle(placeId: string, mascara: string): Promise<DetalleGo
           "X-Goog-FieldMask": mascara,
           "Accept-Language": "es",
         },
-        next: { revalidate: REVALIDAR },
+        cache: "no-store",
       });
     } catch {
       console.error("Place Details no disponible");
-      return null;
+      throw new Error("no-disponible");
     }
     if (respuesta.status !== 200) {
       console.error("Place Details respondió", respuesta.status);
-      unstable_noStore();
-      return null;
+      throw new Error("http");
     }
     try {
-      const detalle = limpiar((await respuesta.json()) as DetalleApi);
-      memoria.set(claveMemoria, { vence: Date.now() + REVALIDAR * 1000, detalle });
-      return detalle;
+      return limpiar((await respuesta.json()) as DetalleApi);
     } catch {
       console.error("Place Details no disponible");
-      return null;
+      throw new Error("no-disponible");
     }
   } finally {
     salirCola();
+  }
+}
+
+const detalleCacheado = unstable_cache(pedirEnRed, ["festejito-place-details"], { revalidate: REVALIDAR });
+
+async function pedirDetalle(placeId: string, mascara: string): Promise<DetalleGoogle | null> {
+  if (enBuild()) return null;
+  if (!process.env.GOOGLE_PLACES_API_KEY) return null;
+  try {
+    return await detalleCacheado(placeId, mascara);
+  } catch {
+    return null;
   }
 }
 
