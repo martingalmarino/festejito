@@ -2,32 +2,24 @@ import { contarBarrios, nombreCorto } from "@/lib/barrios";
 import { entero, pad2 } from "@/lib/formato";
 import { CITY_PATH, barrioPath, fichaPath } from "@/lib/site";
 import type { Salon } from "@/lib/types";
-import { FotoSalon } from "./foto-salon";
 import { Icon } from "./icons";
 import { MapaResultados } from "./mapa";
-import { Nota } from "./nota";
 import { BadgePrecio } from "./precio-linea";
 
 function Tarjeta({ salon, numero, className, titulo }: { salon: Salon; numero: number; className: string; titulo: string }) {
   return (
-    <article className={`group relative flex flex-col border border-ink-200 bg-white hover:border-brand-700 ${className}`}>
-      <FotoSalon salon={salon} className="min-h-0 flex-1" priority={numero === 1} />
-      <div className="border-t border-ink-200 p-3 md:p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <p className="kicker truncate text-ink-500">
-            <span className="num text-brand-700">{pad2(numero)}</span> · {nombreCorto(salon.barrio)}
-          </p>
-          <BadgePrecio placeId={salon.placeId} />
-        </div>
-        <h3 className={`truncate font-display font-medium leading-tight ${titulo}`}>
-          <a href={fichaPath(salon.slug)} className="after:absolute after:inset-0 group-hover:text-brand-800">
-            {salon.nombre}
-          </a>
-        </h3>
-        <div className="mt-0.5">
-          <Nota rating={salon.rating} cantidad={numero === 1 ? salon.cantidadResenas : null} />
-        </div>
+    <article className={`group relative flex h-full flex-col justify-start border border-ink-200 bg-white p-3 hover:border-brand-700 md:p-5 ${className}`}>
+      <div className="flex items-baseline justify-between gap-2">
+        <p className="kicker truncate text-ink-500">
+          <span className="num text-brand-700">{pad2(numero)}</span> · {nombreCorto(salon.barrio)}
+        </p>
+        <BadgePrecio placeId={salon.placeId} />
       </div>
+      <h3 className={`truncate font-display font-medium leading-tight ${titulo}`}>
+        <a href={fichaPath(salon.slug)} className="after:absolute after:inset-0 group-hover:text-brand-800">
+          {salon.nombre}
+        </a>
+      </h3>
     </article>
   );
 }

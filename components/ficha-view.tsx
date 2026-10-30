@@ -1,4 +1,3 @@
-import { bloqueBarrio } from "@/lib/contenido";
 import { diaActual } from "@/lib/horarios";
 import { enlaceComoLlegar, enlaceGoogle } from "@/lib/enlaces";
 import { entero, nota, pesos } from "@/lib/formato";
@@ -270,7 +269,6 @@ export function FichaView({
               {salon.direccion ?? "No informada"}
             </p>
             <p className="mt-3 text-xs text-ink-500">{atribucion}</p>
-            <p className="mt-4 text-xs text-ink-500">{bloqueBarrio(salon.barrio, cantidadBarrio)}</p>
           </div>
         </aside>
       </div>

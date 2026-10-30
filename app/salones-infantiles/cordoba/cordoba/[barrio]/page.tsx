@@ -9,7 +9,7 @@ import { MapaResultados } from "@/components/mapa";
 import { Migas } from "@/components/migas";
 import { VistaListaMapa } from "@/components/vista-lista-mapa";
 import { contarBarrios, nombreCorto } from "@/lib/barrios";
-import { bloqueBarrio, faqsBarrio, introBarrio } from "@/lib/contenido";
+import { faqsBarrio, introBarrio } from "@/lib/contenido";
 import { vecinosEnDosKm } from "@/lib/cercanos";
 import { entero } from "@/lib/formato";
 import { leerFiltros } from "@/lib/filtros";
@@ -81,7 +81,6 @@ export default async function HubBarrio({ params }: Props) {
         </p>
       </div>
       <p className="mt-3 max-w-2xl text-ink-700">{introBarrio(nombre, propios.length, nombresVecinos)}</p>
-      <p className="mt-3 max-w-2xl text-sm text-ink-500">{bloqueBarrio(nombre, propios.length)}</p>
       <nav aria-label="Barrios" className="mt-4">
         <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
           {hubs.map((barrio) => (

@@ -1,6 +1,6 @@
 # Rosario (Santa Fe): textos para el hub
 URL: /salones-infantiles/santa-fe/rosario/
-Fuentes: https://es.wikipedia.org/wiki/Rosario_(Argentina) · Distritos y barrios: https://www.rosario.gob.ar (Distritos municipales) · https://es.wikipedia.org/wiki/Anexo:Barrios_de_Rosario
+Fuentes: Distritos y barrios: https://www.rosario.gob.ar (Distritos municipales)
 
 ## Intro (respuesta directa)
 En Rosario relevamos {{n_salones}} salones de fiestas infantiles y peloteros. Un turno cuesta entre {{precio_min}} y {{precio_max}} ({{fecha_relevamiento}}). Filtralos por distrito o barrio para encontrar uno cerca de casa.

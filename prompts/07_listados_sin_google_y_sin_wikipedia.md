@@ -1,0 +1,5 @@
+# Prompt para Cursor: listados sin consultas a Google y quitar referencia a Wikipedia (rama base-cordoba)
+1. Hub de barrio/ciudad (/salones-infantiles/...), home y cualquier listado: NO llamar a Google ni a listarSalones() con detalles. Armar las tarjetas solo con el catálogo local leerSemillas() (barrio, slug, link a la ficha). Título genérico de la tarjeta ("Salón infantil en {barrio}"); el nombre real aparece solo en la ficha. Sacar del listado rating, horario y foto de Google. Los listados deben hacer 0 llamadas a Places.
+2. Eliminar en todas las fichas y páginas el texto de referencia del barrio a Wikipedia, del tipo: "{Barrio} es un barrio de Córdoba (https://es.wikipedia.org/wiki/Anexo:Barrios_de_la_ciudad_de_Córdoba). Salones relevados: N." Borrar la frase completa, el link a Wikipedia y cualquier dato/constante asociada que quede sin uso. No reemplazar por otro texto.
+3. Si hay sitemap o JSON-LD que use detalles de Google, que use solo el catálogo local.
+No tocar nada más. Build verde, 0 llamadas a Places en el build, y buscar en el repo "wikipedia" para confirmar que no quede ninguna referencia.
