@@ -41,10 +41,23 @@ async function conDetalleCompleto(salon: Salon): Promise<Salon> {
   const extra = await detalleCompleto(salon.placeId);
   if (!extra) return salon;
   const hayExtra =
-    extra.telefono || extra.web || extra.rating !== null || extra.cantidadResenas !== null || extra.horarios || extra.fotoNombre;
+    extra.nombre ||
+    extra.direccion ||
+    extra.ubicacion ||
+    extra.mapsUrl ||
+    extra.telefono ||
+    extra.web ||
+    extra.rating !== null ||
+    extra.cantidadResenas !== null ||
+    extra.horarios ||
+    extra.fotoNombre;
   if (!hayExtra) return salon;
   return {
     ...salon,
+    nombre: extra.nombre ?? salon.nombre,
+    direccion: extra.direccion,
+    ubicacion: extra.ubicacion,
+    mapsUrl: extra.mapsUrl,
     telefono: extra.telefono,
     web: extra.web,
     rating: extra.rating,
@@ -63,10 +76,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const semillas = leerSemillas();
   const indice = semillas.findIndex((semilla) => semilla.slug === slug);
   if (indice < 0) return { title: "Salón" };
-  const salon = salonLocal(semillas[indice], indice);
+  const salon = await conDetalleCompleto(salonLocal(semillas[indice], indice));
   return {
     title: `${salon.nombre} en ${salon.barrio}, Córdoba`,
-    description: `${salon.nombre}, salón infantil en ${salon.barrio}, Córdoba Capital.`,
+    description: salon.direccion
+      ? `${salon.nombre}, salón infantil en ${salon.barrio}, Córdoba. ${salon.direccion}`
+      : `${salon.nombre}, salón infantil en ${salon.barrio}, Córdoba Capital.`,
     alternates: { canonical: fichaPath(salon.slug) },
     robots: { index: true, follow: true },
   };

@@ -4,7 +4,7 @@ import type { Horarios, PeriodoHorario, Punto } from "./types";
 
 const MASCARA_BASICA = "id,displayName,formattedAddress,location,googleMapsUri";
 const MASCARA_COMPLETA =
-  "nationalPhoneNumber,websiteUri,rating,userRatingCount,regularOpeningHours,photos";
+  "displayName,formattedAddress,location,googleMapsUri,nationalPhoneNumber,websiteUri,rating,userRatingCount,regularOpeningHours,photos";
 
 const REVALIDAR = 60 * 60 * 24 * 8;
 const MAX_A_LA_VEZ = 2;
